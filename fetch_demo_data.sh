@@ -47,4 +47,3 @@ gdown "https://drive.google.com/uc?id=1xyF7F3I7lWtdq82xmEPVQ5zl4HaasBso&export=d
 gdown "https://drive.google.com/uc?id=1KjfODCcOUm_xIMLLR54IcjJtf816Dkc7&export=download&confirm=t" -O 'examples.tar.gz'
 tar -xvf examples.tar.gz
 rm -rf examples.tar.gz
-

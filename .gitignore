@@ -25,3 +25,7 @@ data-processing/
 
 tmp*
 lightning_logs/
+
+videos/*
+dataset/
+checkpoints/
