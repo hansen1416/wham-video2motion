@@ -1,0 +1,27 @@
+.idea
+.vs
+.vscode
+
+# py
+__pycache__
+venv
+
+# fe
+dist
+node_modules
+
+backend-sct/.coverage
+backend-gim/.env
+backend-sct/.env
+backend-gim/.vscode/launch.json
+backend-sct/.vscode/launch.json
+backend-sct/.vscode/settings.json
+
+common/.vscode/
+backend-sct/.vscode/
+common/common.egg-info/
+
+data-processing/
+
+tmp*
+lightning_logs/
