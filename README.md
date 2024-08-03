@@ -118,3 +118,15 @@ Please see [License](./LICENSE) for details.
 
 ## Contact
 Please contact soyongs@andrew.cmu.edu for any questions related to this work.
+
+
+```
+conda activate wham
+
+conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch
+
+pip install -r requirements.txt
+
+pip install --proxy http://127.0.0.1:1081 git+https://github.com/mattloper/chumpy
+
+```
