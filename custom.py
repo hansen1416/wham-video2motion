@@ -12,6 +12,8 @@ from progress.bar import Bar
 
 from configs.config import get_cfg_defaults
 from lib.models import build_network, build_body_model
+from lib.models.preproc.detector import DetectionModel
+from lib.models.preproc.extractor import FeatureExtractor
 
 parser = argparse.ArgumentParser()
 
@@ -66,3 +68,15 @@ network = build_network(cfg, smpl)
 network.eval()
 
 print(network)
+
+video = os.path.join("videos", "madfit1.mp4")
+
+cap = cv2.VideoCapture(video)
+assert cap.isOpened(), f"Faild to load video file {video}"
+
+fps = cap.get(cv2.CAP_PROP_FPS)
+length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+width, height = cap.get(cv2.CAP_PROP_FRAME_WIDTH), cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+
+with torch.no_grad():
+    pass
