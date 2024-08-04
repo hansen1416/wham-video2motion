@@ -30,4 +30,5 @@ videos/*
 dataset/
 checkpoints/
 third-party/ViTPose/
-third-party/DPVO/ 
+third-party/DPVO/
+output/
