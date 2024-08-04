@@ -14,6 +14,7 @@ from configs.config import get_cfg_defaults
 from lib.models import build_network, build_body_model
 from lib.models.preproc.detector import DetectionModel
 from lib.models.preproc.extractor import FeatureExtractor
+from lib.data.datasets import CustomDataset
 
 parser = argparse.ArgumentParser()
 
@@ -77,41 +78,63 @@ fps = cap.get(cv2.CAP_PROP_FPS)
 length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 width, height = cap.get(cv2.CAP_PROP_FRAME_WIDTH), cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
+output_pth = os.path.join(".", "output")
+
 with torch.no_grad():
 
-    # `cfg.DEVICE.lower()` cuda
-    detector = DetectionModel(cfg.DEVICE.lower())
-    # `cfg.DEVICE.lower()` cuda, `cfg.FLIP_EVAL` True
-    extractor = FeatureExtractor(cfg.DEVICE.lower(), cfg.FLIP_EVAL)
+    if not (
+        os.path.exists(os.path.join(output_pth, "tracking_results.pth"))
+        and os.path.exists(os.path.join(output_pth, "slam_results.pth"))
+    ):
 
-    slam = None
+        # `cfg.DEVICE.lower()` cuda
+        detector = DetectionModel(cfg.DEVICE.lower())
+        # `cfg.DEVICE.lower()` cuda, `cfg.FLIP_EVAL` True
+        extractor = FeatureExtractor(cfg.DEVICE.lower(), cfg.FLIP_EVAL)
 
-    bar = Bar("Preprocess: 2D detection and SLAM", fill="#", max=length)
+        slam = None
 
-    while cap.isOpened():
-        flag, img = cap.read()
-        if not flag:
-            break
+        bar = Bar("Preprocess: 2D detection and SLAM", fill="#", max=length)
 
-        # 2D detection and tracking
-        detector.track(img, fps, length)
+        while cap.isOpened():
+            flag, img = cap.read()
+            if not flag:
+                break
 
-        # SLAM
+            # 2D detection and tracking
+            detector.track(img, fps, length)
+
+            # SLAM
+            if slam is not None:
+                slam.track()
+
+            bar.next()
+
+        tracking_results = detector.process(fps)
+
         if slam is not None:
-            slam.track()
+            slam_results = slam.process()
+        else:
+            slam_results = np.zeros((length, 7))
+            slam_results[:, 3] = 1.0  # Unit quaternion
 
-        bar.next()
+        # Extract image features
+        # TODO: Merge this into the previous while loop with an online bbox smoothing.
+        tracking_results = extractor.run(video, tracking_results)
 
-    tracking_results = detector.process(fps)
+        print(tracking_results)
 
-    if slam is not None:
-        slam_results = slam.process()
+        joblib.dump(tracking_results, os.path.join(output_pth, "tracking_results.pth"))
+        joblib.dump(slam_results, os.path.join(output_pth, "slam_results.pth"))
+
     else:
-        slam_results = np.zeros((length, 7))
-        slam_results[:, 3] = 1.0  # Unit quaternion
 
-    # Extract image features
-    # TODO: Merge this into the previous while loop with an online bbox smoothing.
-    tracking_results = extractor.run(video, tracking_results)
+        tracking_results = joblib.load(os.path.join(output_pth, "tracking_results.pth"))
+        slam_results = joblib.load(os.path.join(output_pth, "slam_results.pth"))
+        print(f"Already processed data exists at {output_pth} ! Load the data .")
 
-    print(tracking_results)
+    # Build dataset
+    dataset = CustomDataset(cfg, tracking_results, slam_results, width, height, fps)
+
+    # run WHAM
+    results = defaultdict(dict)
