@@ -58,16 +58,15 @@ args = parser.parse_args()
 cfg = get_cfg_defaults()
 cfg.merge_from_file("configs/yamls/demo.yaml")
 
-print(cfg)
-
-print(args)
+# print(cfg)
+# print(args)
 
 smpl_batch_size = cfg.TRAIN.BATCH_SIZE * cfg.DATASET.SEQLEN
 smpl = build_body_model(cfg.DEVICE, smpl_batch_size)
 network = build_network(cfg, smpl)
 network.eval()
 
-print(network)
+# print(network)
 
 video = os.path.join("videos", "madfit1.mp4")
 
@@ -79,4 +78,40 @@ length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 width, height = cap.get(cv2.CAP_PROP_FRAME_WIDTH), cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
 with torch.no_grad():
-    pass
+
+    # `cfg.DEVICE.lower()` cuda
+    detector = DetectionModel(cfg.DEVICE.lower())
+    # `cfg.DEVICE.lower()` cuda, `cfg.FLIP_EVAL` True
+    extractor = FeatureExtractor(cfg.DEVICE.lower(), cfg.FLIP_EVAL)
+
+    slam = None
+
+    bar = Bar("Preprocess: 2D detection and SLAM", fill="#", max=length)
+
+    while cap.isOpened():
+        flag, img = cap.read()
+        if not flag:
+            break
+
+        # 2D detection and tracking
+        detector.track(img, fps, length)
+
+        # SLAM
+        if slam is not None:
+            slam.track()
+
+        bar.next()
+
+    tracking_results = detector.process(fps)
+
+    if slam is not None:
+        slam_results = slam.process()
+    else:
+        slam_results = np.zeros((length, 7))
+        slam_results[:, 3] = 1.0  # Unit quaternion
+
+    # Extract image features
+    # TODO: Merge this into the previous while loop with an online bbox smoothing.
+    tracking_results = extractor.run(video, tracking_results)
+
+    print(tracking_results)

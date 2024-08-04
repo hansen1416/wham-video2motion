@@ -29,3 +29,4 @@ lightning_logs/
 videos/*
 dataset/
 checkpoints/
+third-party/ViTPose/mmpose/*

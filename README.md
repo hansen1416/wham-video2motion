@@ -129,4 +129,7 @@ pip install -r requirements.txt
 
 pip install --proxy http://127.0.0.1:1081 git+https://github.com/mattloper/chumpy
 
+WHAM\third-party>git clone https://github.com/ViTAE-Transformer/ViTPose.git
+
+WHAM\third-party>git clone https://github.com/princeton-vl/DPVO.git
 ```
