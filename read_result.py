@@ -1,6 +1,8 @@
 import joblib
 import os
 
+import numpy as np
+
 output_pth = os.path.join(".", "output")
 
 # Assuming output_pth is defined
@@ -25,6 +27,27 @@ print("trans_world", trans_world.shape)
 print("betas", betas.shape)
 print("verts", verts.shape)
 print("frame_ids", frame_ids.shape)
+
+
+def save2bin(data, filename):
+
+    dirname = os.path.dirname(filename)
+
+    # if dir does not exist, create it
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)
+
+    data = np.array(data, dtype=np.float32)
+    with open(filename, "wb") as f:
+        f.write(data.tobytes())
+
+
+# save 'pose', 'trans', 'pose_world', 'trans_world' to files
+save2bin(pose, os.path.join("results", "madfit1", "pose.bin"))
+save2bin(trans, os.path.join("results", "madfit1", "trans.bin"))
+save2bin(pose_world, os.path.join("results", "madfit1", "pose_world.bin"))
+save2bin(trans_world, os.path.join("results", "madfit1", "trans_world.bin"))
+
 
 """
 'Pelvis', 0
