@@ -3,6 +3,21 @@ import os
 
 import numpy as np
 
+
+def axis_angle_to_quaternion(axis_angle):
+
+    # print(axis_angle)
+
+    axis = axis_angle / np.linalg.norm(axis_angle)
+    angle = np.linalg.norm(axis_angle)
+    half_angle = angle / 2
+
+    w = np.cos(half_angle)
+    x, y, z = axis * np.sin(half_angle)
+
+    return np.array([x, y, z, w])
+
+
 output_pth = os.path.join(".", "output")
 
 # Assuming output_pth is defined
@@ -24,3 +39,7 @@ for pose_frame in pose:
     axis_angles = pose_frame.reshape((24, 3))
 
     print(axis_angles.shape)
+
+    quaternions = np.apply_along_axis(axis_angle_to_quaternion, axis=1, arr=axis_angles)
+
+    print(quaternions)
