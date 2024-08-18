@@ -1,6 +1,7 @@
 import joblib
 import os
 import math
+import json
 
 import numpy as np
 
@@ -514,3 +515,9 @@ for pose_frame in pose:
 
 
 print(tracks)
+
+# save tracks to local json file
+json_file = os.path.join(output_pth, "madfit1", "wham_output.json")
+
+with open(json_file, "w") as f:
+    json.dump(tracks, f)
