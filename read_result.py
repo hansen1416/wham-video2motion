@@ -20,6 +20,8 @@ betas = loaded_results[0]["betas"]
 verts = loaded_results[0]["verts"]
 frame_ids = loaded_results[0]["frame_ids"]
 
+print(loaded_results)
+
 print(f"pose", pose.shape)
 print(f"trans", trans.shape)
 print(f"pose_world", pose_world.shape)
@@ -42,11 +44,11 @@ def save2bin(data, filename):
         f.write(data.tobytes())
 
 
-# save 'pose', 'trans', 'pose_world', 'trans_world' to files
-save2bin(pose, os.path.join("results", "madfit1", "pose.bin"))
-save2bin(trans, os.path.join("results", "madfit1", "trans.bin"))
-save2bin(pose_world, os.path.join("results", "madfit1", "pose_world.bin"))
-save2bin(trans_world, os.path.join("results", "madfit1", "trans_world.bin"))
+# # save 'pose', 'trans', 'pose_world', 'trans_world' to files
+# save2bin(pose, os.path.join("results", "madfit1", "pose.bin"))
+# save2bin(trans, os.path.join("results", "madfit1", "trans.bin"))
+# save2bin(pose_world, os.path.join("results", "madfit1", "pose_world.bin"))
+# save2bin(trans_world, os.path.join("results", "madfit1", "trans_world.bin"))
 
 
 """
