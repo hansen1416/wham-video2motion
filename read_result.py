@@ -3,10 +3,12 @@ import os
 
 import numpy as np
 
-output_pth = os.path.join(".", "output")
+video_name = "madfit3"
+
+output_pth = os.path.join(".", "output", video_name)
 
 # Assuming output_pth is defined
-output_file = os.path.join(output_pth, "madfit1", "wham_output.pkl")
+output_file = os.path.join(output_pth, "wham_output.pkl")
 loaded_results = joblib.load(output_file)
 
 # dict_keys(['pose', 'trans', 'pose_world', 'trans_world', 'betas', 'verts', 'frame_ids'])
@@ -44,11 +46,11 @@ def save2bin(data, filename):
         f.write(data.tobytes())
 
 
-# # save 'pose', 'trans', 'pose_world', 'trans_world' to files
-# save2bin(pose, os.path.join("results", "madfit1", "pose.bin"))
-# save2bin(trans, os.path.join("results", "madfit1", "trans.bin"))
-# save2bin(pose_world, os.path.join("results", "madfit1", "pose_world.bin"))
-# save2bin(trans_world, os.path.join("results", "madfit1", "trans_world.bin"))
+# save 'pose', 'trans', 'pose_world', 'trans_world' to files
+save2bin(pose, os.path.join("results", video_name, "pose.bin"))
+save2bin(trans, os.path.join("results", video_name, "trans.bin"))
+save2bin(pose_world, os.path.join("results", video_name, "pose_world.bin"))
+save2bin(trans_world, os.path.join("results", video_name, "trans_world.bin"))
 
 
 """

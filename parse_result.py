@@ -318,10 +318,12 @@ def RightLegAxisMapping(x, y, z, w):
     return euler2quaternion(-xr, -yr, zr, order="XYZ")
 
 
-output_pth = os.path.join(".", "output")
+video_name = "madfit3"
+
+output_pth = os.path.join(".", "output", video_name)
 
 # Assuming output_pth is defined
-output_file = os.path.join(output_pth, "madfit1", "wham_output.pkl")
+output_file = os.path.join(output_pth, "wham_output.pkl")
 loaded_results = joblib.load(output_file)
 
 pose = loaded_results[0]["pose"]
@@ -517,7 +519,7 @@ for pose_frame in pose:
 print(tracks)
 
 # save tracks to local json file
-json_file = os.path.join(output_pth, "madfit1", "wham_output.json")
+json_file = os.path.join(output_pth, "wham_output.json")
 
 with open(json_file, "w") as f:
     json.dump(tracks, f)
