@@ -1,3 +1,4 @@
+# run `pip install wheel` and `pip install git+https://github.com/mattloper/chumpy.git` to install chumpy
 numpy==1.22.3
 yacs
 joblib
