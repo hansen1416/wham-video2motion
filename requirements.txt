@@ -19,3 +19,9 @@ setuptools
 tqdm
 ultralytics
 gdown==4.6.0
+# pip install mmpose
+# pip install mmengine
+# pip uninstall mmcv
+# pip install -U openmim
+# mim install mmcv==2.1.0
+# pip install mmdet==3.2.0

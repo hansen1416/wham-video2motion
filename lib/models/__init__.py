@@ -30,7 +30,9 @@ def build_network(cfg, smpl):
 
     # Load Checkpoint
     if os.path.isfile(cfg.TRAIN.CHECKPOINT):
-        checkpoint = torch.load(cfg.TRAIN.CHECKPOINT)
+
+        # check the device, and load the model to the device
+        checkpoint = torch.load(cfg.TRAIN.CHECKPOINT, map_location=cfg.DEVICE)
         ignore_keys = [
             "smpl.body_pose",
             "smpl.betas",
