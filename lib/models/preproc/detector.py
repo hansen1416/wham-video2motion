@@ -11,15 +11,12 @@ import scipy.signal as signal
 from progress.bar import Bar
 
 from ultralytics import YOLO
-
-# from mmpose.apis import (
-#     inference_top_down_pose_model,
-#     init_pose_model,
-#     get_track_id,
-#     vis_pose_result,
-# )
-
-from mmpose.apis import inference_topdown, init_model
+from mmpose.apis import (
+    inference_top_down_pose_model,
+    init_pose_model,
+    get_track_id,
+    vis_pose_result,
+)
 
 ROOT_DIR = osp.abspath(f"{__file__}/../../../../")
 VIT_DIR = osp.join(ROOT_DIR, "third-party/ViTPose")
@@ -40,7 +37,7 @@ class DetectionModel(object):
             "configs/body/2d_kpt_sview_rgb_img/topdown_heatmap/coco/ViTPose_huge_coco_256x192.py",
         )
         pose_model_ckpt = osp.join(ROOT_DIR, "checkpoints", "vitpose-h-multi-coco.pth")
-        self.pose_model = init_model(
+        self.pose_model = init_pose_model(
             pose_model_cfg, pose_model_ckpt, device=device.lower()
         )
 
@@ -100,20 +97,11 @@ class DetectionModel(object):
         bboxes = [{"bbox": bbox} for bbox in bboxes]
 
         # keypoints detection
-        # pose_results, returned_outputs = inference_top_down_pose_model(
-        #     self.pose_model,
-        #     img,
-        #     person_results=bboxes,
-        #     format="xyxy",
-        #     return_heatmap=False,
-        #     outputs=None,
-        # )
-
-        pose_results, returned_outputs = inference_topdown(
+        pose_results, returned_outputs = inference_top_down_pose_model(
             self.pose_model,
             img,
-            bboxes=bboxes,
-            bbox_format="xyxy",
+            person_results=bboxes,
+            format="xyxy",
             return_heatmap=False,
             outputs=None,
         )

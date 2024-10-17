@@ -24,3 +24,4 @@ gdown==4.6.0
 # pip install openmim
 # mim install mmengine
 # mim install mmpose
+# https://drive.google.com/uc?id=1xyF7F3I7lWtdq82xmEPVQ5zl4HaasBso&export=download&confirm=t
