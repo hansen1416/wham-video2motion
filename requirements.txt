@@ -25,3 +25,8 @@ gdown==4.6.0
 # mim install mmengine
 # mim install mmpose
 # https://drive.google.com/uc?id=1xyF7F3I7lWtdq82xmEPVQ5zl4HaasBso&export=download&confirm=t
+
+
+# git -c "http.proxy=http://127.0.0.1:1081" clone https://github.com/ViTAE-Transformer/ViTPose.git
+# cd ViTPose
+# pip install -v -e .
