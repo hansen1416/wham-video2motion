@@ -65,6 +65,8 @@ cfg.merge_from_file("configs/yamls/demo.yaml")
 # print(cfg)
 # print(args)
 
+cfg.DEVICE = "cpu"
+
 smpl_batch_size = cfg.TRAIN.BATCH_SIZE * cfg.DATASET.SEQLEN
 smpl = build_body_model(cfg.DEVICE, smpl_batch_size)
 network = build_network(cfg, smpl)
