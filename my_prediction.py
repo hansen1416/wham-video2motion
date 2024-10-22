@@ -18,45 +18,51 @@ from lib.models.smplify import TemporalSMPLify
 from lib.utils.transforms import matrix_to_axis_angle
 
 
-parser = argparse.ArgumentParser()
+# # Namespace(video='videos/madfit.mp4', output_pth='output/demo', calib=None, estimate_local_only=False, visualize=False, save_pkl=False, run_smplify=False)
+# args = argparse.Namespace(
+#     video="videos/madfit1.mp4",
+#     output_pth="output/demo",
+#     calib=None,
+#     estimate_local_only=False,
+#     visualize=False,
+#     save_pkl=False,
+#     run_smplify=False,
+# )
 
-parser.add_argument(
-    "--video",
-    type=str,
-    default="videos/madfit.mp4",
-    help="input video path or youtube link",
-)
-
-parser.add_argument(
-    "--output_pth",
-    type=str,
-    default="output/demo",
-    help="output folder to write results",
-)
-
-parser.add_argument(
-    "--calib", type=str, default=None, help="Camera calibration file path"
-)
-
-parser.add_argument(
-    "--estimate_local_only",
-    action="store_true",
-    help="Only estimate motion in camera coordinate if True",
-)
-
-parser.add_argument(
-    "--visualize", action="store_true", help="Visualize the output mesh if True"
-)
-
-parser.add_argument("--save_pkl", action="store_true", help="Save output as pkl file")
-
-parser.add_argument(
-    "--run_smplify",
-    action="store_true",
-    help="Run Temporal SMPLify for post processing",
-)
-
-args = parser.parse_args()
 
 cfg = get_cfg_defaults()
 cfg.merge_from_file("configs/yamls/demo.yaml")
+
+if torch.cuda.is_available():
+    cfg.DEVICE = "cuda"
+else:
+    cfg.DEVICE = "cpu"
+
+# print(cfg)
+
+video_name = "madfit1.mp4"
+video_path = os.path.join("videos", video_name)
+
+output_pth = os.path.join(".", "output", video_name)
+
+if not os.path.exists(output_pth):
+    os.makedirs(output_pth)
+
+
+cap = cv2.VideoCapture(video_path)
+assert cap.isOpened(), f"Faild to load video file {video_path}"
+
+fps = cap.get(cv2.CAP_PROP_FPS)
+length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+width, height = cap.get(cv2.CAP_PROP_FRAME_WIDTH), cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+
+
+with torch.no_grad():
+
+    # `cfg.DEVICE.lower()` cuda
+    detector = DetectionModel(cfg.DEVICE.lower())
+    # `cfg.DEVICE.lower()` cuda, `cfg.FLIP_EVAL` True
+    extractor = FeatureExtractor(cfg.DEVICE.lower(), cfg.FLIP_EVAL)
+
+    print(detector)
+    print(extractor)
