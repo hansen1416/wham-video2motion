@@ -18,7 +18,6 @@ from lib.data.datasets import CustomDataset
 from lib.utils.imutils import avg_preds
 from lib.models.smplify import TemporalSMPLify
 from lib.utils.transforms import matrix_to_axis_angle
-from geometry_utils import *
 
 
 # # Namespace(video='videos/madfit.mp4', output_pth='output/demo', calib=None, estimate_local_only=False, visualize=False, save_pkl=False, run_smplify=False)
@@ -316,3 +315,18 @@ print(
     f"pose: {pose.shape}, trans: {trans.shape}, pose_world: {pose_world.shape}, trans_world: {trans_world.shape}, \
       betas: {betas.shape}, verts: {verts.shape}, frame_ids: {frame_ids.shape}"
 )
+
+tt = lambda x: torch.from_numpy(x).float().to(cfg.DEVICE)
+
+global_output = smpl.get_output(
+    body_pose=tt(pose_world[:, 3:]),
+    global_orient=tt(pose_world[:, :3]),
+    betas=tt(betas),
+    transl=tt(trans_world),
+)
+
+print(global_output)
+
+verts_glob = global_output.vertices.cpu()
+
+print(verts_glob)
