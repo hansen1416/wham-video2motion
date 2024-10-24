@@ -2,6 +2,7 @@ import os
 import argparse
 from collections import defaultdict
 from typing import Tuple
+import json
 
 import cv2
 import torch
@@ -17,6 +18,7 @@ from lib.data.datasets import CustomDataset
 from lib.utils.imutils import avg_preds
 from lib.models.smplify import TemporalSMPLify
 from lib.utils.transforms import matrix_to_axis_angle
+from geometry_utils import *
 
 
 # # Namespace(video='videos/madfit.mp4', output_pth='output/demo', calib=None, estimate_local_only=False, visualize=False, save_pkl=False, run_smplify=False)
@@ -295,6 +297,22 @@ smpl = build_body_model(cfg.DEVICE, smpl_batch_size)
 network = build_network(cfg, smpl)
 network.eval()
 
+# `results` is a dictionary, the 1st layer is number of subjects,
+# the 2nd layer include keys ('pose', 'trans', 'pose_world', 'trans_world', 'betas', 'verts', 'frame_ids')
+# `pose`: (n_frames, 72), `trans`: (n_frames, 3), `pose_world`: (n_frames, 72), `trans_world`: (n_frames, 3)
+# `betas`: (n_frames, 10), `verts`: (n_frames, 6890, 3), `frame_ids`: (n_frames,)
+# the 6890 in `verts` is the number of vertices in SMPL model
 results = motion_prediction(cfg, network, dataset, output_pth)
 
-print(results)
+pose = results[0]["pose"]
+trans = results[0]["trans"]
+pose_world = results[0]["pose_world"]
+trans_world = results[0]["trans_world"]
+betas = results[0]["betas"]
+verts = results[0]["verts"]
+frame_ids = results[0]["frame_ids"]
+
+print(
+    f"pose: {pose.shape}, trans: {trans.shape}, pose_world: {pose_world.shape}, trans_world: {trans_world.shape}, \
+      betas: {betas.shape}, verts: {verts.shape}, frame_ids: {frame_ids.shape}"
+)
