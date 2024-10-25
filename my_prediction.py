@@ -318,28 +318,10 @@ print(
       betas: {betas.shape}, verts: {verts.shape}, frame_ids: {frame_ids.shape}"
 )
 
-tt = lambda x: torch.from_numpy(x).float().to(cfg.DEVICE)
+frame1_verts = verts[0]
 
-global_output = smpl.get_output(
-    body_pose=tt(pose_world[:, 3:]),
-    global_orient=tt(pose_world[:, :3]),
-    betas=tt(betas),
-    transl=tt(trans_world),
-)
-
-print(global_output)
-
-# print(smpl)
-# print(smpl.faces)
-
-verts_glob = global_output.vertices.cpu()
-
-# To shift the Y-axis of the 3D vertex positions to start at 0.
-# This ensures a consistent and interpretable coordinate system, especially when dealing with different poses or subjects.
-verts_glob[..., 1] = verts_glob[..., 1] - verts_glob[..., 1].min()
-
-vertex_colors = np.ones([verts_glob.shape[0], 4]) * [0.3, 0.3, 0.3, 0.8]
-tri_mesh = trimesh.Trimesh(verts_glob)
+vertex_colors = np.ones([frame1_verts.shape[0], 4]) * [0.3, 0.3, 0.3, 0.8]
+tri_mesh = trimesh.Trimesh(frame1_verts, smpl.faces, vertex_colors=vertex_colors)
 
 mesh = pyrender.Mesh.from_trimesh(tri_mesh)
 
