@@ -9,6 +9,8 @@ import torch
 import joblib
 import numpy as np
 from progress.bar import Bar
+import pyrender
+import trimesh
 
 from configs.config import get_cfg_defaults
 from lib.models import build_network, build_body_model
@@ -327,6 +329,21 @@ global_output = smpl.get_output(
 
 print(global_output)
 
+# print(smpl)
+# print(smpl.faces)
+
 verts_glob = global_output.vertices.cpu()
 
-print(verts_glob)
+# To shift the Y-axis of the 3D vertex positions to start at 0.
+# This ensures a consistent and interpretable coordinate system, especially when dealing with different poses or subjects.
+verts_glob[..., 1] = verts_glob[..., 1] - verts_glob[..., 1].min()
+
+vertex_colors = np.ones([verts_glob.shape[0], 4]) * [0.3, 0.3, 0.3, 0.8]
+tri_mesh = trimesh.Trimesh(verts_glob)
+
+mesh = pyrender.Mesh.from_trimesh(tri_mesh)
+
+scene = pyrender.Scene()
+scene.add(mesh)
+
+pyrender.Viewer(scene, use_raymond_lighting=True)

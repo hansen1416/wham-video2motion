@@ -33,3 +33,4 @@ third-party/ViTPose/
 third-party/DPVO/
 output/
 results/
+*.whl

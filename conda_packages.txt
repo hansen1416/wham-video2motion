@@ -1,0 +1,132 @@
+# packages in environment at C:\Users\105476\AppData\Local\miniconda3\envs\wham:
+#
+# Name                    Version                   Build  Channel
+absl-py                   2.1.0                    pypi_0    pypi
+addict                    2.4.0                    pypi_0    pypi
+beautifulsoup4            4.12.3                   pypi_0    pypi
+blas                      1.0                         mkl  
+brotli-python             1.0.9            py39hd77b12b_8  
+ca-certificates           2024.9.24            haa95532_0  
+certifi                   2024.8.30        py39haa95532_0  
+charset-normalizer        3.3.2              pyhd3eb1b0_0  
+chumpy                    0.71                     pypi_0    pypi
+colorama                  0.4.6              pyhd8ed1ab_0    conda-forge
+contourpy                 1.2.1                    pypi_0    pypi
+cpuonly                   2.0                           0    pytorch
+cycler                    0.12.1                   pypi_0    pypi
+cython                    3.0.11                   pypi_0    pypi
+einops                    0.8.0                    pypi_0    pypi
+filelock                  3.16.1                   pypi_0    pypi
+fonttools                 4.54.1                   pypi_0    pypi
+freetype                  2.12.1               ha860e81_0  
+fvcore                    0.1.5.post20221221    pyhd8ed1ab_0    conda-forge
+gdown                     4.6.0                    pypi_0    pypi
+giflib                    5.2.2                h7edc060_0  
+gmpy2                     2.1.2            py39h7f96b67_0  
+grpcio                    1.67.0                   pypi_0    pypi
+idna                      3.7              py39haa95532_0  
+imageio                   2.36.0                   pypi_0    pypi
+imageio-ffmpeg            0.5.1                    pypi_0    pypi
+importlib-metadata        8.5.0                    pypi_0    pypi
+importlib-resources       6.4.5                    pypi_0    pypi
+intel-openmp              2023.1.0         h59b6b97_46320  
+iopath                    0.1.9                      py39    iopath
+jinja2                    3.1.4            py39haa95532_0  
+joblib                    1.4.2                    pypi_0    pypi
+jpeg                      9e                   h827c3e9_3  
+json-tricks               3.17.3                   pypi_0    pypi
+kiwisolver                1.4.7                    pypi_0    pypi
+lazy-loader               0.4                      pypi_0    pypi
+lcms2                     2.12                 h83e58a3_0  
+lerc                      3.0                  hd77b12b_0  
+libdeflate                1.17                 h2bbff1b_1  
+libjpeg-turbo             2.0.0                h196d8e1_0  
+libpng                    1.6.39               h8cc25b3_0  
+libtiff                   4.5.1                hd77b12b_0  
+libuv                     1.48.0               h827c3e9_0  
+libwebp                   1.3.2                hbc33d0d_0  
+libwebp-base              1.3.2                h2bbff1b_0  
+loguru                    0.7.2                    pypi_0    pypi
+lz4-c                     1.9.4                h2bbff1b_1  
+markdown                  3.7                      pypi_0    pypi
+markupsafe                3.0.1                    pypi_0    pypi
+matplotlib                3.8.4                    pypi_0    pypi
+mkl                       2023.1.0         h6b88ed4_46358  
+mkl-service               2.4.0            py39h2bbff1b_1  
+mkl_fft                   1.3.10           py39h827c3e9_0  
+mkl_random                1.2.7            py39hc64d2fc_0  
+mmcv                      1.3.9                    pypi_0    pypi
+mmpose                    0.24.0                    dev_0    <develop>
+mpc                       1.1.0                h7edee0f_1  
+mpfr                      4.0.2                h62dcd97_1  
+mpir                      3.0.0                hec2e145_1  
+mpmath                    1.3.0            py39haa95532_0  
+munkres                   1.1.4                    pypi_0    pypi
+networkx                  3.2.1            py39haa95532_0  
+numpy                     1.22.3                   pypi_0    pypi
+opencv-python             4.10.0.84                pypi_0    pypi
+openjpeg                  2.5.2                hae555c5_0  
+openssl                   3.3.2                h2466b09_0    conda-forge
+packaging                 24.1                     pypi_0    pypi
+pandas                    2.0.3                    pypi_0    pypi
+pillow                    10.4.0           py39h827c3e9_0  
+pip                       24.2             py39haa95532_0  
+platformdirs              4.3.6                    pypi_0    pypi
+portalocker               2.10.1           py39hcbf5309_1    conda-forge
+progress                  1.6                      pypi_0    pypi
+protobuf                  5.28.2                   pypi_0    pypi
+psutil                    6.1.0                    pypi_0    pypi
+py-cpuinfo                9.0.0                    pypi_0    pypi
+pyparsing                 3.2.0                    pypi_0    pypi
+pysocks                   1.7.1            py39haa95532_0  
+python                    3.9.20               h8205438_1  
+python-dateutil           2.9.0.post0              pypi_0    pypi
+python_abi                3.9                      2_cp39    conda-forge
+pytorch                   2.5.0               py3.9_cpu_0    pytorch
+pytorch-mutex             1.0                         cpu    pytorch
+pytz                      2024.2                   pypi_0    pypi
+pywin32                   307              py39ha51f57c_3    conda-forge
+pyyaml                    6.0.2            py39ha55e580_1    conda-forge
+regex                     2024.9.11                pypi_0    pypi
+requests                  2.32.3           py39haa95532_0  
+scikit-image              0.22.0                   pypi_0    pypi
+scipy                     1.11.4                   pypi_0    pypi
+seaborn                   0.13.2                   pypi_0    pypi
+setuptools                75.1.0           py39haa95532_0  
+six                       1.16.0                   pypi_0    pypi
+smplx                     0.1.28                   pypi_0    pypi
+soupsieve                 2.6                      pypi_0    pypi
+sqlite                    3.45.3               h2bbff1b_0  
+sympy                     1.13.2           py39haa95532_0  
+tabulate                  0.9.0              pyhd8ed1ab_1    conda-forge
+tbb                       2021.8.0             h59b6b97_0  
+tensorboard               2.18.0                   pypi_0    pypi
+tensorboard-data-server   0.7.2                    pypi_0    pypi
+termcolor                 2.5.0              pyhd8ed1ab_0    conda-forge
+tifffile                  2024.8.30                pypi_0    pypi
+timm                      0.4.9                    pypi_0    pypi
+tomli                     2.0.2                    pypi_0    pypi
+torchaudio                2.5.0                  py39_cpu    pytorch
+torchvision               0.20.0                 py39_cpu    pytorch
+tqdm                      4.66.5             pyhd8ed1ab_0    conda-forge
+typing_extensions         4.11.0           py39haa95532_0  
+tzdata                    2024.2                   pypi_0    pypi
+ucrt                      10.0.22621.0         h57928b3_1    conda-forge
+ultralytics               8.2.40                   pypi_0    pypi
+ultralytics-thop          2.0.9                    pypi_0    pypi
+urllib3                   2.2.3            py39haa95532_0  
+vc                        14.40                h2eaa2aa_1  
+vc14_runtime              14.40.33810         hcc2c482_22    conda-forge
+vs2015_runtime            14.40.33810         h3bf8584_22    conda-forge
+werkzeug                  3.0.4                    pypi_0    pypi
+wheel                     0.44.0           py39haa95532_0  
+win32-setctime            1.1.0                    pypi_0    pypi
+win_inet_pton             1.1.0            py39haa95532_0  
+xtcocotools               1.14.3                   pypi_0    pypi
+xz                        5.4.6                h8cc25b3_1  
+yacs                      0.1.8              pyhd8ed1ab_0    conda-forge
+yaml                      0.2.5                h8ffe710_2    conda-forge
+yapf                      0.40.2                   pypi_0    pypi
+zipp                      3.20.2                   pypi_0    pypi
+zlib                      1.2.13               h8cc25b3_1  
+zstd                      1.5.6                h8880b57_0  
