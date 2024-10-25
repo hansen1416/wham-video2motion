@@ -318,10 +318,12 @@ print(
       betas: {betas.shape}, verts: {verts.shape}, frame_ids: {frame_ids.shape}"
 )
 
-frame1_verts = verts[0]
 
-vertex_colors = np.ones([frame1_verts.shape[0], 4]) * [0.3, 0.3, 0.3, 0.8]
-tri_mesh = trimesh.Trimesh(frame1_verts, smpl.faces, vertex_colors=vertex_colors)
+# visual each frame from results
+
+vertex_colors = np.ones([verts[0].shape[0], 4]) * [0.3, 0.3, 0.3, 0.8]
+
+tri_mesh = trimesh.Trimesh(verts[0], smpl.faces, vertex_colors=vertex_colors)
 
 mesh = pyrender.Mesh.from_trimesh(tri_mesh)
 
@@ -329,3 +331,14 @@ scene = pyrender.Scene()
 scene.add(mesh)
 
 pyrender.Viewer(scene, use_raymond_lighting=True)
+
+for i in range(verts.shape[0]):
+    frame_verts = verts[i]
+
+    mesh.vertices = frame_verts
+
+    scene = pyrender.Scene()
+
+    scene.add(mesh)
+
+    pyrender.Viewer(scene, use_raymond_lighting=True)
