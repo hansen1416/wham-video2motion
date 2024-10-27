@@ -11,6 +11,9 @@ import numpy as np
 from progress.bar import Bar
 import pyrender
 import trimesh
+from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 from configs.config import get_cfg_defaults
 from lib.models import build_network, build_body_model
@@ -124,15 +127,6 @@ video_width, video_height = video_capture.get(
 
 tracking_results, slam_results = get_tracks_slam_results(
     video_path, output_pth, cfg, video_length, video_capture, video_fps
-)
-
-
-# print(tracking_results[0].keys())
-# print(slam_results.shape)
-
-# Build dataset
-dataset = CustomDataset(
-    cfg, tracking_results, slam_results, video_width, video_height, video_fps
 )
 
 
@@ -298,12 +292,25 @@ smpl = build_body_model(cfg.DEVICE, smpl_batch_size)
 network = build_network(cfg, smpl)
 network.eval()
 
-# `results` is a dictionary, the 1st layer is number of subjects,
-# the 2nd layer include keys ('pose', 'trans', 'pose_world', 'trans_world', 'betas', 'verts', 'frame_ids')
-# `pose`: (n_frames, 72), `trans`: (n_frames, 3), `pose_world`: (n_frames, 72), `trans_world`: (n_frames, 3)
-# `betas`: (n_frames, 10), `verts`: (n_frames, 6890, 3), `frame_ids`: (n_frames,)
-# the 6890 in `verts` is the number of vertices in SMPL model
-results = motion_prediction(cfg, network, dataset, output_pth)
+if not os.path.exists(os.path.join(output_pth, "wham_output.pkl")):
+
+    # print(tracking_results[0].keys())
+    # print(slam_results.shape)
+
+    # Build dataset
+    dataset = CustomDataset(
+        cfg, tracking_results, slam_results, video_width, video_height, video_fps
+    )
+
+    # `results` is a dictionary, the 1st layer is number of subjects,
+    # the 2nd layer include keys ('pose', 'trans', 'pose_world', 'trans_world', 'betas', 'verts', 'frame_ids')
+    # `pose`: (n_frames, 72), `trans`: (n_frames, 3), `pose_world`: (n_frames, 72), `trans_world`: (n_frames, 3)
+    # `betas`: (n_frames, 10), `verts`: (n_frames, 6890, 3), `frame_ids`: (n_frames,)
+    # the 6890 in `verts` is the number of vertices in SMPL model
+    results = motion_prediction(cfg, network, dataset, output_pth)
+
+else:
+    results = joblib.load(os.path.join(output_pth, "wham_output.pkl"))
 
 pose = results[0]["pose"]
 trans = results[0]["trans"]
@@ -320,25 +327,40 @@ print(
 
 
 # visual each frame from results
+fig = plt.figure()
+ax = fig.add_subplot(111, projection="3d")
 
-vertex_colors = np.ones([verts[0].shape[0], 4]) * [0.3, 0.3, 0.3, 0.8]
+mesh = Poly3DCollection(verts[0][smpl.faces], alpha=0.9)
+face_color = (1.0, 1.0, 0.9)
+edge_color = (0.5, 0.5, 0)
+mesh.set_edgecolor(edge_color)
+mesh.set_facecolor(face_color)
+ax.add_collection3d(mesh)
+# ax.scatter(joints[:, 0], joints[:, 1], joints[:, 2], color="r")
 
-tri_mesh = trimesh.Trimesh(verts[0], smpl.faces, vertex_colors=vertex_colors)
+# if plot_joints:
+#     ax.scatter(joints[:, 0], joints[:, 1], joints[:, 2], alpha=0.1)
+plt.show()
 
-mesh = pyrender.Mesh.from_trimesh(tri_mesh)
 
-scene = pyrender.Scene()
-scene.add(mesh)
+# vertex_colors = np.ones([verts[0].shape[0], 4]) * [0.3, 0.3, 0.3, 0.8]
 
-pyrender.Viewer(scene, use_raymond_lighting=True)
+# tri_mesh = trimesh.Trimesh(verts[0], smpl.faces, vertex_colors=vertex_colors)
 
-for i in range(verts.shape[0]):
-    frame_verts = verts[i]
+# mesh = pyrender.Mesh.from_trimesh(tri_mesh)
 
-    mesh.vertices = frame_verts
+# scene = pyrender.Scene()
+# scene.add(mesh)
 
-    scene = pyrender.Scene()
+# pyrender.Viewer(scene, use_raymond_lighting=True)
 
-    scene.add(mesh)
+# for i in range(verts.shape[0]):
+#     frame_verts = verts[i]
 
-    pyrender.Viewer(scene, use_raymond_lighting=True)
+#     mesh.vertices = frame_verts
+
+#     scene = pyrender.Scene()
+
+#     scene.add(mesh)
+
+#     pyrender.Viewer(scene, use_raymond_lighting=True)
