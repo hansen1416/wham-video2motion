@@ -1,7 +1,10 @@
-import pygame
-import numpy as np
+import os
 import sys
 import math
+import joblib
+
+import pygame
+import numpy as np
 
 
 class MeshPlayer:
@@ -89,48 +92,15 @@ class MeshPlayer:
 
 
 if __name__ == "__main__":
-    # main()
 
-    # Define the vertices of a cube
-    vertices = np.array(
-        [
-            [-1, -1, -1],
-            [1, -1, -1],
-            [1, 1, -1],
-            [-1, 1, -1],
-            [-1, -1, 1],
-            [1, -1, 1],
-            [1, 1, 1],
-            [-1, 1, 1],
-        ],
-        dtype=np.float64,
-    )
+    video_name = "madfit1.mp4"
 
-    def update_vertices(base_vertices):
+    output_pth = os.path.join(".", "output", video_name)
 
-        frame_vertices = []
+    results = joblib.load(os.path.join(output_pth, "wham_output.pkl"))
+    faces = np.load(os.path.join(output_pth, "faces.npy"))
 
-        """Randomly update the vertices of the cube."""
-        for i in range(100):
-            tmp_vertices = np.copy(base_vertices)
-            # Randomly adjust each vertex position slightly
-            tmp_vertices += np.random.normal(0, 0.01, size=3)  # Small random change
-
-            frame_vertices.append(tmp_vertices)
-
-        return np.array(frame_vertices)
-
-    all_vertices = update_vertices(vertices)
-
-    # Define the faces of the cube (each face is defined by a list of vertex indices)
-    faces = [
-        [0, 1, 2],  # Back face
-        [4, 5, 6],  # Front face
-        [0, 1, 5],  # Bottom face
-        [2, 3, 7],  # Top face
-        [0, 3, 7],  # Left face
-        [1, 2, 6],  # Right face
-    ]
+    all_vertices = results[0]["verts"]
 
     mp = MeshPlayer(vertices_frame=all_vertices, faces=faces)
 

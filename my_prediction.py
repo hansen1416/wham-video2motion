@@ -2,18 +2,12 @@ import os
 import argparse
 from collections import defaultdict
 from typing import Tuple
-import json
 
 import cv2
 import torch
 import joblib
 import numpy as np
 from progress.bar import Bar
-import pyrender
-import trimesh
-from matplotlib import pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 from configs.config import get_cfg_defaults
 from lib.models import build_network, build_body_model
@@ -292,6 +286,7 @@ smpl = build_body_model(cfg.DEVICE, smpl_batch_size)
 network = build_network(cfg, smpl)
 network.eval()
 
+
 if not os.path.exists(os.path.join(output_pth, "wham_output.pkl")):
 
     # print(tracking_results[0].keys())
@@ -309,38 +304,42 @@ if not os.path.exists(os.path.join(output_pth, "wham_output.pkl")):
     # the 6890 in `verts` is the number of vertices in SMPL model
     results = motion_prediction(cfg, network, dataset, output_pth)
 
+    # save smpl.faces to local file
+    np.save(os.path.join(output_pth, "faces.npy"), smpl.faces)
+
 else:
     results = joblib.load(os.path.join(output_pth, "wham_output.pkl"))
+
 
 pose = results[0]["pose"]
 trans = results[0]["trans"]
 pose_world = results[0]["pose_world"]
 trans_world = results[0]["trans_world"]
 betas = results[0]["betas"]
-verts = results[0]["verts"]
+all_vertices = results[0]["verts"]
 frame_ids = results[0]["frame_ids"]
 
 print(
     f"pose: {pose.shape}, trans: {trans.shape}, pose_world: {pose_world.shape}, trans_world: {trans_world.shape}, \
-      betas: {betas.shape}, verts: {verts.shape}, frame_ids: {frame_ids.shape}"
+      betas: {betas.shape}, verts: {all_vertices.shape}, frame_ids: {frame_ids.shape}"
 )
 
 
-# visual each frame from results
-fig = plt.figure()
-ax = fig.add_subplot(111, projection="3d")
+# # visual each frame from results
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection="3d")
 
-mesh = Poly3DCollection(verts[0][smpl.faces], alpha=0.9)
-face_color = (1.0, 1.0, 0.9)
-edge_color = (0.5, 0.5, 0)
-mesh.set_edgecolor(edge_color)
-mesh.set_facecolor(face_color)
-ax.add_collection3d(mesh)
-# ax.scatter(joints[:, 0], joints[:, 1], joints[:, 2], color="r")
+# mesh = Poly3DCollection(verts[0][smpl.faces], alpha=0.9)
+# face_color = (1.0, 1.0, 0.9)
+# edge_color = (0.5, 0.5, 0)
+# mesh.set_edgecolor(edge_color)
+# mesh.set_facecolor(face_color)
+# ax.add_collection3d(mesh)
+# # ax.scatter(joints[:, 0], joints[:, 1], joints[:, 2], color="r")
 
-# if plot_joints:
-#     ax.scatter(joints[:, 0], joints[:, 1], joints[:, 2], alpha=0.1)
-plt.show()
+# # if plot_joints:
+# #     ax.scatter(joints[:, 0], joints[:, 1], joints[:, 2], alpha=0.1)
+# plt.show()
 
 
 # vertex_colors = np.ones([verts[0].shape[0], 4]) * [0.3, 0.3, 0.3, 0.8]

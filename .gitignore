@@ -33,4 +33,5 @@ third-party/ViTPose/
 third-party/DPVO/
 output/
 results/
+venv3d/
 *.whl
