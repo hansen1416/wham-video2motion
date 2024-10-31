@@ -346,7 +346,7 @@ else:
 faces = np.array(smpl.faces)
 
 # (13776, 3)
-# print(faces.shape)
+# print(faces.flatten().shape)
 
 faces_filepath = os.path.join(
     os.path.join(os.environ["USERPROFILE"], "Documents"), "faces.bin"
