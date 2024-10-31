@@ -2,6 +2,7 @@ import os
 import argparse
 from collections import defaultdict
 from typing import Tuple
+import struct
 
 import cv2
 import torch
@@ -324,6 +325,38 @@ print(
       betas: {betas.shape}, verts: {all_vertices.shape}, frame_ids: {frame_ids.shape}"
 )
 
+
+all_vertices_data = all_vertices.flatten()
+
+file_path = os.path.join(
+    os.path.join(os.environ["USERPROFILE"], "Documents"), "all_vertices.bin"
+)
+
+# Open a binary file for writing
+with open(file_path, "wb") as binary_file:
+    for value in all_vertices_data:
+        # Pack the float64 value into binary format
+        packed_data = struct.pack("d", value)
+        # Write the packed data to the file
+        binary_file.write(packed_data)
+
+print(f"Data saved to {file_path}")
+
+# # List to hold the read float64 values
+# read_data = []
+
+# # Open the binary file for reading
+# with open(file_path, "rb") as binary_file:
+#     while True:
+#         # Read 8 bytes (size of float64)
+#         bytes_data = binary_file.read(8)
+#         if not bytes_data:
+#             break  # End of file
+#         # Unpack the bytes back to float64
+#         value = struct.unpack("d", bytes_data)[0]
+#         read_data.append(value)
+
+# print("Data read from file:", read_data)
 
 # # visual each frame from results
 # fig = plt.figure()
