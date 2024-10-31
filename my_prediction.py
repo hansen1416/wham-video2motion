@@ -325,6 +325,7 @@ print(
       betas: {betas.shape}, verts: {all_vertices.shape}, frame_ids: {frame_ids.shape}"
 )
 
+# print(all_vertices)
 
 all_vertices_data = all_vertices.flatten()
 
