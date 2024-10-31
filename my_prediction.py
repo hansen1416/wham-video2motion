@@ -312,36 +312,54 @@ else:
     results = joblib.load(os.path.join(output_pth, "wham_output.pkl"))
 
 
-pose = results[0]["pose"]
-trans = results[0]["trans"]
-pose_world = results[0]["pose_world"]
-trans_world = results[0]["trans_world"]
-betas = results[0]["betas"]
-all_vertices = results[0]["verts"]
-frame_ids = results[0]["frame_ids"]
+# pose = results[0]["pose"]
+# trans = results[0]["trans"]
+# pose_world = results[0]["pose_world"]
+# trans_world = results[0]["trans_world"]
+# betas = results[0]["betas"]
+# all_vertices = results[0]["verts"]
+# frame_ids = results[0]["frame_ids"]
 
-print(
-    f"pose: {pose.shape}, trans: {trans.shape}, pose_world: {pose_world.shape}, trans_world: {trans_world.shape}, \
-      betas: {betas.shape}, verts: {all_vertices.shape}, frame_ids: {frame_ids.shape}"
+# print(
+#     f"pose: {pose.shape}, trans: {trans.shape}, pose_world: {pose_world.shape}, trans_world: {trans_world.shape}, \
+#       betas: {betas.shape}, verts: {all_vertices.shape}, frame_ids: {frame_ids.shape}"
+# )
+
+# # print(all_vertices)
+
+# all_vertices_data = all_vertices.flatten()
+
+# file_path = os.path.join(
+#     os.path.join(os.environ["USERPROFILE"], "Documents"), "all_vertices.bin"
+# )
+
+# # Open a binary file for writing
+# with open(file_path, "wb") as binary_file:
+#     for value in all_vertices_data:
+#         # Pack the float64 value into binary format
+#         packed_data = struct.pack("d", value)
+#         # Write the packed data to the file
+#         binary_file.write(packed_data)
+
+# print(f"Data saved to {file_path}")
+
+faces = np.array(smpl.faces)
+
+# (13776, 3)
+# print(faces.shape)
+
+faces_filepath = os.path.join(
+    os.path.join(os.environ["USERPROFILE"], "Documents"), "faces.bin"
 )
 
-# print(all_vertices)
-
-all_vertices_data = all_vertices.flatten()
-
-file_path = os.path.join(
-    os.path.join(os.environ["USERPROFILE"], "Documents"), "all_vertices.bin"
-)
-
-# Open a binary file for writing
-with open(file_path, "wb") as binary_file:
-    for value in all_vertices_data:
+with open(faces_filepath, "wb") as binary_file:
+    for value in faces.flatten():
         # Pack the float64 value into binary format
-        packed_data = struct.pack("d", value)
+        packed_data = struct.pack("I", value)
         # Write the packed data to the file
         binary_file.write(packed_data)
 
-print(f"Data saved to {file_path}")
+print(f"Faces saved to {faces_filepath}")
 
 # # List to hold the read float64 values
 # read_data = []
