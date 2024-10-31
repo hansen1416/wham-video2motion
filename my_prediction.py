@@ -355,7 +355,7 @@ faces_filepath = os.path.join(
 with open(faces_filepath, "wb") as binary_file:
     for value in faces.flatten():
         # Pack the float64 value into binary format
-        packed_data = struct.pack("I", value)
+        packed_data = struct.pack("L", value)
         # Write the packed data to the file
         binary_file.write(packed_data)
 
